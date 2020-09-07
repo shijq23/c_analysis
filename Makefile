@@ -1,7 +1,13 @@
 CXX := clang-11
 CXXFLAGS := -Wsign-compare -Wsign-conversion -Wextra -Wall -Wincompatible-pointer-types -Werror-pointer-arith
 
-hello: hello.c
+ll: hello.c
+	$(CXX) -S -emit-llvm $^
+
+bc: ll
+	llvm-as-11 hello.ll
+
+app: hello.c
 	$(CXX) $(CXXFLAGS) $^  -o $@
 
 .PHONY: all
@@ -108,7 +114,7 @@ $(BUILDDIR)/try_matcher: $(SRC_CLANG_DIR)/experimental/try_matcher.cpp
 .PHONY: clean format
 
 clean:
-	rm -rf a.out hello
+	rm -rf a.out hello hello.ll hello.bc
 
 format:
 	find . -name "*.c" | xargs clang-format-11 -style=file -i

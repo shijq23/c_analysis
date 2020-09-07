@@ -31,3 +31,5 @@
 *.out
 *.app
 hello
+hello.ll
+hello.bc
